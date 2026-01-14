@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Lagos Solar Mini-Grid",
+    "projectId": "0x4e317248604e473e5e6d512cbdf5c0ba9f3d0f37de5def44b4e4df0a8266e5ec",
+    "bondToken": "0xE3b2D69046B50377F95AB3CFF5C89A8C38f2cA35",
+    "market": "0xE64b943db0c7013fa22baFd252f99551c8A4EE30"
+  },
+  {
+    "name": "Kigali Digital Skills Lab",
+    "projectId": "0xb103b23d51df3b907f130abe1815d531c395a0f8068d80efea528f883b4268c4",
+    "bondToken": "0xB83759A22C3cd405CC4D72Fb247f9f0FDb46fa23",
+    "market": "0x87575b344041C9a5d68dFb160edc762826445513"
+  },
+  {
+    "name": "Dar es Salaam Mobile Clinic",
+    "projectId": "0xf2a24a30b308d4dd59c7d6ea2ebcdda3f4394724da14b06f9adc7760737092fe",
+    "bondToken": "0xd40d54BE8e638e934AB68f3F8D348FE838a9961c",
+    "market": "0x8A61AebE8c68ea3aD5951cb51cB6ce0523fF2fB9"
+  }
+]

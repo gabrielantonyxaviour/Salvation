@@ -1,0 +1,704 @@
+@import "tailwindcss";
+
+/* ===============================================
+   SALVATION Design System
+   African-inspired color palette and design tokens
+   =============================================== */
+
+:root {
+  /* ==================== BRAND COLORS ==================== */
+  /* Inspired by African Sunset */
+  --primary-sunset-orange: #e65100;
+  --primary-sunset-light: #ff6f00;
+  --primary-sunset-dark: #bf360c;
+
+  /* Secondary Colors - Sahara and Savanna */
+  --secondary-sahara-gold: #f39c12;
+  --secondary-savanna-green: #27ae60;
+  --secondary-ocean-teal: #00838f;
+  --secondary-ocean-light: #00acc1;
+
+  /* Accent Colors - Pan-African Flag */
+  --accent-heritage-red: #e74c3c;
+  --accent-heritage-yellow: #f1c40f;
+  --accent-heritage-green: #2ecc71;
+  --accent-heritage-black: #2c3e50;
+
+  /* ==================== CATEGORY COLORS ==================== */
+  --category-infrastructure: #3498db;
+  --category-education: #9b59b6;
+  --category-health-care: #e74c3c;
+  --category-agriculture: #2ecc71;
+  --category-technology: #34495e;
+  --category-community: #f39c12;
+  --category-cultural: #d35400;
+
+  /* ==================== NEUTRAL COLORS ==================== */
+  /* Dark theme - inspired by African night */
+  --white: #ffffff;
+  --background: #0a0a0a;
+  --surface: #141414;
+  --surface-elevated: #1a1a1a;
+
+  --border-light: #262626;
+  --border: #333333;
+  --border-dark: #404040;
+
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #737373;
+  --text-inverse: #0a0a0a;
+
+  --overlay: rgba(0, 0, 0, 0.5);
+  --overlay-light: rgba(0, 0, 0, 0.25);
+
+  /* ==================== SEMANTIC COLORS ==================== */
+  --success: #27ae60;
+  --warning: #f39c12;
+  --error: #e74c3c;
+  --info: #3498db;
+
+  /* Voting Colors */
+  --vote-yes: #2ecc71;
+  --vote-no: #e74c3c;
+  --vote-abstain: #95a5a6;
+
+  /* ==================== SPACING ==================== */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;    /* 4px */
+  --spacing-2: 0.5rem;     /* 8px */
+  --spacing-3: 0.75rem;    /* 12px */
+  --spacing-4: 1rem;       /* 16px */
+  --spacing-5: 1.25rem;    /* 20px */
+  --spacing-6: 1.5rem;     /* 24px */
+  --spacing-8: 2rem;       /* 32px */
+  --spacing-10: 2.5rem;    /* 40px */
+  --spacing-12: 3rem;      /* 48px */
+  --spacing-16: 4rem;      /* 64px */
+  --spacing-20: 5rem;      /* 80px */
+  --spacing-24: 6rem;      /* 96px */
+  --spacing-32: 8rem;      /* 128px */
+
+  /* ==================== BORDER RADIUS ==================== */
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius: 0.5rem;        /* 8px - Shadcn default */
+  --radius-md: 0.75rem;    /* 12px */
+  --radius-lg: 1rem;       /* 16px */
+  --radius-xl: 1.5rem;     /* 24px */
+  --radius-2xl: 2rem;      /* 32px */
+  --radius-full: 9999px;
+
+  /* ==================== SHADOWS ==================== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Colored shadows for CTAs */
+  --shadow-primary: 0 10px 30px -5px rgba(230, 81, 0, 0.3);
+  --shadow-success: 0 10px 30px -5px rgba(39, 174, 96, 0.3);
+}
+
+/* ==================== TAILWIND THEME CONFIGURATION ==================== */
+@theme inline {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--text-primary);
+  --color-surface: var(--surface);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--text-primary);
+  --color-primary: var(--primary-sunset-orange);
+  --color-primary-light: var(--primary-sunset-light);
+  --color-primary-dark: var(--primary-sunset-dark);
+  --color-secondary: var(--secondary-savanna-green);
+  --color-accent: var(--accent-heritage-red);
+  --color-muted: var(--text-tertiary);
+  --color-border: var(--border-light);
+
+  /* Fonts */
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --font-sans: var(--font-body);
+
+  /* Border Radius */
+  --radius-default: var(--radius);
+
+  /* Shadows */
+  --shadow-default: var(--shadow);
+}
+
+/* ==================== MEDIA QUERY: DARK MODE (OPTIONAL) ==================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --surface: #1a1a1a;
+    --surface-elevated: #2a2a2a;
+    --text-primary: #ededed;
+    --text-secondary: #a0a0a0;
+    --text-tertiary: #757575;
+    --border-light: #1f1f1f;
+    --border: #262626;
+    --border-dark: #2d2d2d;
+  }
+}
+
+/* ==================== MOTION PREFERENCES ==================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==================== BASE STYLES ==================== */
+body {
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== TYPOGRAPHY CLASSES ==================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: 3rem;        /* 48px */
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 2.25rem;     /* 36px */
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.875rem;    /* 30px */
+  font-weight: 700;
+}
+
+h4 {
+  font-size: 1.5rem;      /* 24px */
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 1.25rem;     /* 20px */
+  font-weight: 600;
+}
+
+h6 {
+  font-size: 1.125rem;    /* 18px */
+  font-weight: 500;
+}
+
+/* Display Text (Hero Headlines) */
+.text-display {
+  font-family: var(--font-heading), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 4.5rem;      /* 72px */
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-sunset-orange) 0%, var(--primary-sunset-light) 50%, #ffb74d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-sunset-orange) 0%, var(--secondary-savanna-green) 100%);
+  color: var(--white);
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: var(--shadow-primary);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-sunset-dark) 0%, #1e8449 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Gradient Primary Button - Orange to Green */
+.btn-gradient {
+  background: linear-gradient(135deg, #f97316 0%, #22c55e 100%);
+  color: var(--white);
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #16a34a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-sunset-orange);
+  border: 2px solid var(--primary-sunset-orange);
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background: rgba(230, 81, 0, 0.1);
+}
+
+/* Card Styles */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+/* Badge Styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-infrastructure { background: var(--category-infrastructure); color: white; }
+.badge-education { background: var(--category-education); color: white; }
+.badge-health-care { background: var(--category-health-care); color: white; }
+.badge-agriculture { background: var(--category-agriculture); color: white; }
+.badge-technology { background: var(--category-technology); color: white; }
+.badge-community { background: var(--category-community); color: white; }
+.badge-cultural { background: var(--category-cultural); color: white; }
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background: var(--border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-sunset-orange) 0%, var(--primary-sunset-light) 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ==================== MILESTONE PROSE STYLES ==================== */
+.prose-sm {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.prose-sm h1,
+.prose-sm h2,
+.prose-sm h3,
+.prose-sm h4,
+.prose-sm h5,
+.prose-sm h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-sm p {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.prose-sm strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.prose-sm ul,
+.prose-sm ol {
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.prose-sm ul {
+  list-style-type: disc;
+}
+
+.prose-sm ol {
+  list-style-type: decimal;
+}
+
+.prose-sm li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.prose-sm code {
+  background: var(--border-light);
+  padding: 0.125rem 0.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875em;
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+*:focus-visible {
+  outline: 2px solid var(--primary-sunset-orange);
+  outline-offset: 2px;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ==================== SONNER TOAST CUSTOMIZATION ==================== */
+[data-sonner-toaster] {
+  font-family: var(--font-body) !important;
+}
+
+[data-sonner-toast] {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+[data-sonner-toast][data-type="success"] {
+  border-color: var(--success) !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  border-color: var(--error) !important;
+}
+
+[data-sonner-toast][data-type="loading"] {
+  border-color: var(--primary-sunset-orange) !important;
+}
+
+[data-sonner-toast] [data-title] {
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+}
+
+[data-sonner-toast] [data-description] {
+  color: var(--text-secondary) !important;
+  font-family: var(--font-body) !important;
+}
+
+[data-sonner-toast] [data-button] {
+  background: var(--primary-sunset-orange) !important;
+  color: white !important;
+  border-radius: var(--radius) !important;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+}
+
+[data-sonner-toast] [data-button]:hover {
+  background: var(--primary-sunset-dark) !important;
+}
+
+[data-sonner-toast] [data-close-button] {
+  border-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-sonner-toast] [data-close-button]:hover {
+  background: var(--border-light) !important;
+}
+
+/* ==================== AI ANALYSIS MARKDOWN PROSE STYLES ==================== */
+.prose-invert {
+  color: var(--text-primary);
+  line-height: 1.75;
+  max-width: none;
+}
+
+.prose-invert h1,
+.prose-invert h2,
+.prose-invert h3,
+.prose-invert h4,
+.prose-invert h5,
+.prose-invert h6 {
+  color: var(--primary-sunset-orange);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  line-height: 1.25;
+}
+
+.prose-invert h1 {
+  font-size: 2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+  margin-top: 0;
+}
+
+.prose-invert h2 {
+  font-size: 1.5em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+.prose-invert h3 {
+  font-size: 1.25em;
+}
+
+.prose-invert h4 {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.prose-invert p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: var(--text-secondary);
+}
+
+.prose-invert strong {
+  color: var(--primary-sunset-orange);
+  font-weight: 600;
+}
+
+.prose-invert em {
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+.prose-invert code {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  border: 1px solid var(--border);
+}
+
+.prose-invert pre {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1em;
+  overflow-x: auto;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.prose-invert pre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: 0.875em;
+  line-height: 1.7;
+}
+
+.prose-invert ul,
+.prose-invert ol {
+  padding-left: 1.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose-invert ul {
+  list-style-type: disc;
+}
+
+.prose-invert ol {
+  list-style-type: decimal;
+}
+
+.prose-invert li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.prose-invert li > p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose-invert blockquote {
+  border-left: 4px solid var(--primary-sunset-orange);
+  padding-left: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  font-style: italic;
+  color: var(--text-secondary);
+  background: var(--surface-elevated);
+  padding: 1em;
+  border-radius: var(--radius);
+}
+
+.prose-invert table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.prose-invert th {
+  background: var(--surface-elevated);
+  padding: 0.75em 1em;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border);
+}
+
+.prose-invert td {
+  padding: 0.75em 1em;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.prose-invert tr:last-child td {
+  border-bottom: none;
+}
+
+.prose-invert a {
+  color: var(--primary-sunset-orange);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.prose-invert a:hover {
+  text-decoration-color: var(--primary-sunset-orange);
+}
+
+.prose-invert hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+/* Syntax highlighting for code blocks (optional enhancement) */
+.prose-invert pre code .keyword {
+  color: #ff79c6;
+}
+
+.prose-invert pre code .string {
+  color: #50fa7b;
+}
+
+.prose-invert pre code .number {
+  color: #bd93f9;
+}
+
+.prose-invert pre code .comment {
+  color: var(--text-tertiary);
+  font-style: italic;
+}

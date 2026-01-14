@@ -1,0 +1,27 @@
+{
+  "name": "Forest Impact Badge",
+  "description": "Major Contributor. Your exceptional support of $1,000+ creates a forest of opportunity, transforming entire communities across Africa.",
+  "image": "https://lime-active-constrictor-506.mypinata.cloud/ipfs/bafybeihopricbbjsmq2ud6ziym3hzll5haeeoiyliapgka5d5tld3psuse/forest.png",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Forest"
+    },
+    {
+      "trait_type": "Level",
+      "value": "4"
+    },
+    {
+      "trait_type": "Minimum Donation",
+      "value": "$1,000"
+    },
+    {
+      "trait_type": "Category",
+      "value": "Impact Badge"
+    },
+    {
+      "trait_type": "Transferable",
+      "value": "Soulbound"
+    }
+  ]
+}

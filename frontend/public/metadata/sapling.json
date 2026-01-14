@@ -1,0 +1,27 @@
+{
+  "name": "Sapling Impact Badge",
+  "description": "Growing Impact. Your continued support of $50 or more is helping Salvation projects take root and grow across Africa.",
+  "image": "https://lime-active-constrictor-506.mypinata.cloud/ipfs/bafybeihopricbbjsmq2ud6ziym3hzll5haeeoiyliapgka5d5tld3psuse/sapling.png",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Sapling"
+    },
+    {
+      "trait_type": "Level",
+      "value": "2"
+    },
+    {
+      "trait_type": "Minimum Donation",
+      "value": "$50"
+    },
+    {
+      "trait_type": "Category",
+      "value": "Impact Badge"
+    },
+    {
+      "trait_type": "Transferable",
+      "value": "Soulbound"
+    }
+  ]
+}

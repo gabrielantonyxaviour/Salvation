@@ -1,0 +1,15 @@
+{
+  "chainId": 5003,
+  "networkName": "mantleSepolia",
+  "timestamp": "2026-01-14T20:30:41.621Z",
+  "deployer": "0x32FE11d9900D63350016374BE98ff37c3Af75847",
+  "oracleAgent": "0x32FE11d9900D63350016374BE98ff37c3Af75847",
+  "contracts": {
+    "usdc": "0xBEFdC386aA5AecA6d9c45f6c316C43c5e01DBb44",
+    "projectRegistry": "0x7cC5385b2fa1cA408a2f7F938001cf0ccECA390c",
+    "bondFactory": "0xcfCd96d4b017Bc83Fd67B030D32d103a7F6F485D",
+    "yieldVault": "0xFB66a25b0B81285e8beF1E6cA35976EC49B70056",
+    "marketFactory": "0xa9fa08aef1c34AeB7851Ab5Ac3ed955BD071151A",
+    "oracleAggregator": "0xE40FEF7cd6721a6f3e1B88647a0558d392fb476F"
+  }
+}

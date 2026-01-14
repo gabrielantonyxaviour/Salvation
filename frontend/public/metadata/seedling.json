@@ -1,0 +1,27 @@
+{
+  "name": "Seeding Impact Badge",
+  "description": "Entry Level - First Contribution. You've made your first step in building Africa's future by donating $10 or more to Salvation projects.",
+  "image": "https://lime-active-constrictor-506.mypinata.cloud/ipfs/bafybeihopricbbjsmq2ud6ziym3hzll5haeeoiyliapgka5d5tld3psuse/seeding.png",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Seeding"
+    },
+    {
+      "trait_type": "Level",
+      "value": "1"
+    },
+    {
+      "trait_type": "Minimum Donation",
+      "value": "$10"
+    },
+    {
+      "trait_type": "Category",
+      "value": "Impact Badge"
+    },
+    {
+      "trait_type": "Transferable",
+      "value": "Soulbound"
+    }
+  ]
+}

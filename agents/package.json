@@ -1,0 +1,38 @@
+{
+  "name": "salvation-agents",
+  "version": "1.0.0",
+  "description": "Multi-agent system for Salvation - Infrastructure bonds verification on Mantle",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc"
+  },
+  "keywords": ["mantle", "a2a", "agents", "ai", "blockchain", "verification"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@a2a-js/sdk": "^0.3.4",
+    "@langchain/core": "^1.0.1",
+    "@langchain/langgraph": "^1.0.1",
+    "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.12.2",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "ethers": "^6.13.0",
+    "express": "^5.1.0",
+    "langchain": "^1.0.1",
+    "node-cron": "^3.0.3",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.13.14",
+    "@types/node-cron": "^3.0.11"
+  }
+}

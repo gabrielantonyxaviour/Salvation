@@ -1,0 +1,19 @@
+{
+  "name": "salvation-subgraph",
+  "version": "0.1.0",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy:studio": "graph deploy --studio salvation",
+    "create-local": "graph create --node http://localhost:8020/ salvation",
+    "remove-local": "graph remove --node http://localhost:8020/ salvation",
+    "deploy:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 salvation",
+    "deploy:goldsky": "goldsky subgraph deploy salvation/1.0.0 --path .",
+    "start:local": "docker-compose up -d",
+    "stop:local": "docker-compose down"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.93.2",
+    "@graphprotocol/graph-ts": "0.35.1"
+  }
+}

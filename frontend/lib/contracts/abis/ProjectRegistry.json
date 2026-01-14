@@ -1,0 +1,90 @@
+[
+  {
+    "inputs": [],
+    "name": "getAllProjects",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "bytes32", "name": "id", "type": "bytes32" },
+          { "internalType": "string", "name": "metadataURI", "type": "string" },
+          { "internalType": "address", "name": "sponsor", "type": "address" },
+          { "internalType": "uint256", "name": "fundingGoal", "type": "uint256" },
+          { "internalType": "uint256", "name": "fundingRaised", "type": "uint256" },
+          { "internalType": "uint256", "name": "bondPrice", "type": "uint256" },
+          { "internalType": "uint8", "name": "status", "type": "uint8" },
+          { "internalType": "uint256", "name": "createdAt", "type": "uint256" }
+        ],
+        "internalType": "struct IProjectRegistry.Project[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "projectId", "type": "bytes32" }],
+    "name": "getProject",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "bytes32", "name": "id", "type": "bytes32" },
+          { "internalType": "string", "name": "metadataURI", "type": "string" },
+          { "internalType": "address", "name": "sponsor", "type": "address" },
+          { "internalType": "uint256", "name": "fundingGoal", "type": "uint256" },
+          { "internalType": "uint256", "name": "fundingRaised", "type": "uint256" },
+          { "internalType": "uint256", "name": "bondPrice", "type": "uint256" },
+          { "internalType": "uint8", "name": "status", "type": "uint8" },
+          { "internalType": "uint256", "name": "createdAt", "type": "uint256" }
+        ],
+        "internalType": "struct IProjectRegistry.Project",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getActiveProjects",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "bytes32", "name": "id", "type": "bytes32" },
+          { "internalType": "string", "name": "metadataURI", "type": "string" },
+          { "internalType": "address", "name": "sponsor", "type": "address" },
+          { "internalType": "uint256", "name": "fundingGoal", "type": "uint256" },
+          { "internalType": "uint256", "name": "fundingRaised", "type": "uint256" },
+          { "internalType": "uint256", "name": "bondPrice", "type": "uint256" },
+          { "internalType": "uint8", "name": "status", "type": "uint8" },
+          { "internalType": "uint256", "name": "createdAt", "type": "uint256" }
+        ],
+        "internalType": "struct IProjectRegistry.Project[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProjectCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "string", "name": "metadataURI", "type": "string" },
+      { "internalType": "uint256", "name": "fundingGoal", "type": "uint256" },
+      { "internalType": "uint256", "name": "bondPrice", "type": "uint256" }
+    ],
+    "name": "registerProject",
+    "outputs": [{ "internalType": "bytes32", "name": "projectId", "type": "bytes32" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

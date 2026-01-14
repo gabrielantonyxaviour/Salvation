@@ -1,0 +1,27 @@
+{
+  "name": "Heritage Guardian Impact Badge",
+  "description": "Highest Level - Guardian of Africa's Future. Your extraordinary $5,000+ contribution makes you a true guardian, preserving and advancing African heritage for generations to come.",
+  "image": "https://lime-active-constrictor-506.mypinata.cloud/ipfs/bafybeihopricbbjsmq2ud6ziym3hzll5haeeoiyliapgka5d5tld3psuse/heritage.png",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Heritage Guardian"
+    },
+    {
+      "trait_type": "Level",
+      "value": "5"
+    },
+    {
+      "trait_type": "Minimum Donation",
+      "value": "$5,000"
+    },
+    {
+      "trait_type": "Category",
+      "value": "Impact Badge"
+    },
+    {
+      "trait_type": "Transferable",
+      "value": "Soulbound"
+    }
+  ]
+}

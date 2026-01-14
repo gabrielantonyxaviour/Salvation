@@ -1,0 +1,179 @@
+specVersion: 0.0.5
+features:
+  - ipfsOnEthereumContracts
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ProjectRegistry
+    network: mantle-sepolia
+    source:
+      address: "0x7cC5385b2fa1cA408a2f7F938001cf0ccECA390c"
+      abi: ProjectRegistry
+      startBlock: 33438980
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Project
+        - Milestone
+        - Location
+      abis:
+        - name: ProjectRegistry
+          file: ./abis/ProjectRegistry.json
+      eventHandlers:
+        - event: ProjectRegistered(indexed bytes32,indexed address,string,uint256,uint256)
+          handler: handleProjectRegistered
+        - event: ProjectStatusUpdated(indexed bytes32,uint8)
+          handler: handleProjectStatusUpdated
+        - event: ProjectFunded(indexed bytes32,uint256,uint256)
+          handler: handleProjectFunded
+      file: ./src/project-registry.ts
+
+  - kind: ethereum/contract
+    name: BondFactory
+    network: mantle-sepolia
+    source:
+      address: "0xcfCd96d4b017Bc83Fd67B030D32d103a7F6F485D"
+      abi: BondFactory
+      startBlock: 33438980
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - BondToken
+        - Project
+      abis:
+        - name: BondFactory
+          file: ./abis/BondFactory.json
+        - name: BondToken
+          file: ./abis/BondToken.json
+      eventHandlers:
+        - event: BondCreated(indexed bytes32,address)
+          handler: handleBondCreated
+        - event: BondsPurchased(indexed bytes32,indexed address,uint256,uint256)
+          handler: handleBondsPurchased
+      file: ./src/bond-factory.ts
+
+  - kind: ethereum/contract
+    name: MarketFactory
+    network: mantle-sepolia
+    source:
+      address: "0xa9fa08aef1c34AeB7851Ab5Ac3ed955BD071151A"
+      abi: MarketFactory
+      startBlock: 33438980
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Market
+        - Project
+      abis:
+        - name: MarketFactory
+          file: ./abis/MarketFactory.json
+        - name: LMSRMarket
+          file: ./abis/LMSRMarket.json
+      eventHandlers:
+        - event: MarketCreated(indexed bytes32,indexed address,string,uint256,uint256)
+          handler: handleMarketCreated
+      file: ./src/market-factory.ts
+
+  - kind: ethereum/contract
+    name: YieldVault
+    network: mantle-sepolia
+    source:
+      address: "0xFB66a25b0B81285e8beF1E6cA35976EC49B70056"
+      abi: YieldVault
+      startBlock: 33438980
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - YieldVault
+        - YieldClaim
+      abis:
+        - name: YieldVault
+          file: ./abis/YieldVault.json
+      eventHandlers:
+        - event: RevenueDeposited(indexed bytes32,uint256,uint256)
+          handler: handleRevenueDeposited
+        - event: YieldClaimed(indexed bytes32,indexed address,uint256)
+          handler: handleYieldClaimed
+      file: ./src/yield-vault.ts
+
+  - kind: ethereum/contract
+    name: OracleAggregator
+    network: mantle-sepolia
+    source:
+      address: "0xE40FEF7cd6721a6f3e1B88647a0558d392fb476F"
+      abi: OracleAggregator
+      startBlock: 33438980
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Milestone
+        - Project
+      abis:
+        - name: OracleAggregator
+          file: ./abis/OracleAggregator.json
+      eventHandlers:
+        - event: MilestonesSetup(indexed bytes32,uint256)
+          handler: handleMilestonesSetup
+        - event: MilestoneVerified(indexed bytes32,indexed uint256,bool,string,uint256)
+          handler: handleMilestoneVerified
+        - event: ProjectMarkedFailed(indexed bytes32,string)
+          handler: handleProjectMarkedFailed
+      file: ./src/oracle-aggregator.ts
+
+templates:
+  - kind: ethereum/contract
+    name: BondToken
+    network: mantle-sepolia
+    source:
+      abi: BondToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - BondToken
+        - BondHolder
+      abis:
+        - name: BondToken
+          file: ./abis/BondToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: BondsMinted(indexed address,uint256)
+          handler: handleBondsMinted
+      file: ./src/bond-token.ts
+
+  - kind: ethereum/contract
+    name: LMSRMarket
+    network: mantle-sepolia
+    source:
+      abi: LMSRMarket
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Market
+        - Trade
+      abis:
+        - name: LMSRMarket
+          file: ./abis/LMSRMarket.json
+      eventHandlers:
+        - event: SharesPurchased(indexed address,indexed bool,uint256,uint256)
+          handler: handleSharesPurchased
+        - event: SharesSold(indexed address,indexed bool,uint256,uint256)
+          handler: handleSharesSold
+        - event: MarketResolved(bool,uint256)
+          handler: handleMarketResolved
+      file: ./src/lmsr-market.ts

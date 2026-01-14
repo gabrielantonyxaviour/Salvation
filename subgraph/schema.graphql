@@ -1,0 +1,104 @@
+type Project @entity {
+  id: ID!  # bytes32 projectId
+  name: String
+  description: String
+  metadataURI: String!
+  sponsor: Bytes!
+  category: String
+  status: String!
+  fundingGoal: BigInt!
+  fundingRaised: BigInt!
+  bondPrice: BigInt!
+  projectedAPY: BigInt
+  imageUrl: String
+  revenueModel: String
+  createdAt: BigInt!
+  updatedAt: BigInt!
+
+  # Relationships
+  location: Location
+  bondToken: BondToken
+  market: Market
+  milestones: [Milestone!]! @derivedFrom(field: "project")
+}
+
+type Location @entity {
+  id: ID!
+  country: String!
+  region: String!
+  latitude: BigDecimal
+  longitude: BigDecimal
+}
+
+type BondToken @entity {
+  id: ID!  # address
+  project: Project!
+  symbol: String!
+  totalSupply: BigInt!
+  createdAt: BigInt!
+  holders: [BondHolder!]! @derivedFrom(field: "bondToken")
+}
+
+type BondHolder @entity {
+  id: ID!  # bondToken-holder
+  bondToken: BondToken!
+  project: String!
+  holder: Bytes!
+  balance: BigInt!
+  lastActivity: BigInt!
+}
+
+type Market @entity {
+  id: ID!  # address
+  project: Project!
+  question: String!
+  yesPrice: BigDecimal!
+  noPrice: BigDecimal!
+  yesPool: BigInt!
+  noPool: BigInt!
+  totalVolume: BigInt!
+  resolved: Boolean!
+  outcome: Boolean
+  createdAt: BigInt!
+  resolvedAt: BigInt
+  trades: [Trade!]! @derivedFrom(field: "market")
+}
+
+type Trade @entity {
+  id: ID!  # txHash-logIndex
+  market: Market!
+  trader: Bytes!
+  isYes: Boolean!
+  isBuy: Boolean!
+  amount: BigInt!
+  cost: BigInt!
+  timestamp: BigInt!
+}
+
+type Milestone @entity {
+  id: ID!  # projectId-index
+  project: Project!
+  index: BigInt!
+  description: String!
+  targetDate: BigInt!
+  completed: Boolean!
+  completedAt: BigInt
+  evidenceURI: String
+  createdAt: BigInt!
+}
+
+type YieldVault @entity {
+  id: ID!  # projectId-vault
+  project: String!
+  totalYield: BigInt!
+  claimedYield: BigInt!
+  lastDeposit: BigInt
+}
+
+type YieldClaim @entity {
+  id: ID!  # txHash-logIndex
+  vault: YieldVault!
+  claimer: Bytes!
+  amount: BigInt!
+  timestamp: BigInt!
+}

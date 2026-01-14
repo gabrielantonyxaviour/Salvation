@@ -1,0 +1,47 @@
+[
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "projectId", "type": "bytes32" },
+      { "internalType": "address", "name": "holder", "type": "address" }
+    ],
+    "name": "claimableYield",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "projectId", "type": "bytes32" }],
+    "name": "claimYield",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "projectId", "type": "bytes32" }],
+    "name": "getProjectYieldInfo",
+    "outputs": [
+      { "internalType": "uint256", "name": "totalRevenue", "type": "uint256" },
+      { "internalType": "uint256", "name": "distributed", "type": "uint256" },
+      { "internalType": "uint256", "name": "apy", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "projectRevenue",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes32", "name": "projectId", "type": "bytes32" },
+      { "indexed": true, "internalType": "address", "name": "holder", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "YieldClaimed",
+    "type": "event"
+  }
+]

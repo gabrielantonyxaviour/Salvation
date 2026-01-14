@@ -1,0 +1,27 @@
+{
+  "name": "Baobab Tree Impact Badge",
+  "description": "Significant Impact. Like the mighty Baobab tree, your $200+ contribution stands strong and provides lasting support to African communities.",
+  "image": "https://lime-active-constrictor-506.mypinata.cloud/ipfs/bafybeihopricbbjsmq2ud6ziym3hzll5haeeoiyliapgka5d5tld3psuse/baobab.png",
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Baobab Tree"
+    },
+    {
+      "trait_type": "Level",
+      "value": "3"
+    },
+    {
+      "trait_type": "Minimum Donation",
+      "value": "$200"
+    },
+    {
+      "trait_type": "Category",
+      "value": "Impact Badge"
+    },
+    {
+      "trait_type": "Transferable",
+      "value": "Soulbound"
+    }
+  ]
+}

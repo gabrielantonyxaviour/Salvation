@@ -1,0 +1,24 @@
+{
+  "mantle-sepolia": {
+    "ProjectRegistry": {
+      "address": "0x7b26647372E10B7e363A8A857FF88C0C0b63913b",
+      "startBlock": 0
+    },
+    "BondFactory": {
+      "address": "0x9ED03b9a9Fb743ac36EFb35B72a2db31DE525821",
+      "startBlock": 0
+    },
+    "YieldVault": {
+      "address": "0xe05dC9467de459adFc5c31Ce4746579d29B65ba2",
+      "startBlock": 0
+    },
+    "MarketFactory": {
+      "address": "0xCEF696B36e24945f45166548B1632c7585e3F0DB",
+      "startBlock": 0
+    },
+    "OracleAggregator": {
+      "address": "0x11191A01670643f2BE3BD8965a16F59556258c2d",
+      "startBlock": 0
+    }
+  }
+}

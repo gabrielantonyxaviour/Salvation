@@ -1,0 +1,72 @@
+{
+  "version": "1",
+  "name": "salvation",
+  "abis": {
+    "ProjectRegistry": {
+      "path": "./abis/ProjectRegistry.json"
+    },
+    "BondFactory": {
+      "path": "./abis/BondFactory.json"
+    },
+    "BondToken": {
+      "path": "./abis/BondToken.json"
+    },
+    "MarketFactory": {
+      "path": "./abis/MarketFactory.json"
+    },
+    "LMSRMarket": {
+      "path": "./abis/LMSRMarket.json"
+    },
+    "YieldVault": {
+      "path": "./abis/YieldVault.json"
+    },
+    "OracleAggregator": {
+      "path": "./abis/OracleAggregator.json"
+    }
+  },
+  "chains": ["mantle-sepolia"],
+  "instances": [
+    {
+      "name": "salvation-mainnet",
+      "chain": "mantle-sepolia",
+      "start_block": 0
+    }
+  ],
+  "data_sources": [
+    {
+      "name": "ProjectRegistry",
+      "abi": "ProjectRegistry",
+      "address": "0x7b26647372E10B7e363A8A857FF88C0C0b63913b",
+      "chain": "mantle-sepolia",
+      "start_block": 0
+    },
+    {
+      "name": "BondFactory",
+      "abi": "BondFactory",
+      "address": "0x9ED03b9a9Fb743ac36EFb35B72a2db31DE525821",
+      "chain": "mantle-sepolia",
+      "start_block": 0
+    },
+    {
+      "name": "MarketFactory",
+      "abi": "MarketFactory",
+      "address": "0xCEF696B36e24945f45166548B1632c7585e3F0DB",
+      "chain": "mantle-sepolia",
+      "start_block": 0
+    },
+    {
+      "name": "YieldVault",
+      "abi": "YieldVault",
+      "address": "0xe05dC9467de459adFc5c31Ce4746579d29B65ba2",
+      "chain": "mantle-sepolia",
+      "start_block": 0
+    },
+    {
+      "name": "OracleAggregator",
+      "abi": "OracleAggregator",
+      "address": "0x11191A01670643f2BE3BD8965a16F59556258c2d",
+      "chain": "mantle-sepolia",
+      "start_block": 0
+    }
+  ]
+}
