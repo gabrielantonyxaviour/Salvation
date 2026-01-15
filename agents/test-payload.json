@@ -1,0 +1,25 @@
+{
+  "startAnalysis": true,
+  "application": {
+    "id": "test-app-001",
+    "project_name": "Lagos Solar Grid Initiative",
+    "category": "Energy",
+    "country": "Nigeria",
+    "region": "Lagos",
+    "latitude": 6.5244,
+    "longitude": 3.3792,
+    "description": "A 50MW solar power installation serving 100,000 households in underserved areas of Lagos. The project includes rooftop panels on public buildings and a distributed battery storage network.",
+    "funding_goal": 2500000,
+    "bond_price": 100,
+    "projected_apy": 8.5,
+    "revenue_model": "Power purchase agreements with Lagos State government and direct consumer sales via prepaid meters",
+    "milestones": [
+      {"title": "Site Acquisition", "percentage": 20},
+      {"title": "Equipment Procurement", "percentage": 40},
+      {"title": "Installation Phase 1", "percentage": 70},
+      {"title": "Full Operations", "percentage": 100}
+    ],
+    "status": "pending"
+  },
+  "history": []
+}

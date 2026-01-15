@@ -23,6 +23,7 @@ export class ClaudeClient {
 
   /**
    * Send a chat request to Claude service
+   * The claude-service returns newline-delimited JSON (NDJSON) format
    */
   async chat(prompt: string, options: {
     model?: 'opus' | 'sonnet';
@@ -48,28 +49,41 @@ export class ClaudeClient {
       throw new Error(`Claude service error: ${response.status} - ${error}`);
     }
 
-    const data = await response.json() as any;
+    // The claude-service returns NDJSON (newline-delimited JSON)
+    // Each line is a JSON object, we need the 'completion' event with the response
+    const text = await response.text();
+    const lines = text.split('\n').filter(line => line.trim());
 
-    // The claude-service returns the response in various formats
-    // Handle both direct text and structured responses
     let responseText = '';
-    if (typeof data === 'string') {
-      responseText = data;
-    } else if (data.response) {
-      responseText = data.response;
-    } else if (data.result) {
-      responseText = data.result;
-    } else if (data.content) {
-      responseText = Array.isArray(data.content)
-        ? data.content.map((c: any) => c.text || c).join('')
-        : data.content;
-    } else {
-      responseText = JSON.stringify(data);
+    let sessionId = '';
+
+    for (const line of lines) {
+      try {
+        const data = JSON.parse(line);
+
+        // Capture session ID from initial response
+        if (data.sessionId && !sessionId) {
+          sessionId = data.sessionId;
+        }
+
+        // The result event contains the final response
+        if (data.type === 'result' && data.result) {
+          responseText = data.result;
+          break;
+        }
+      } catch {
+        // Skip invalid JSON lines
+        continue;
+      }
+    }
+
+    if (!responseText) {
+      throw new Error('No response received from Claude service');
     }
 
     return {
       response: responseText,
-      sessionId: data.sessionId,
+      sessionId,
     };
   }
 
