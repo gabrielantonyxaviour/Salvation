@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { MockUSDCABI } from '@/lib/contracts/abis';
 import { getContracts, MANTLE_SEPOLIA_CHAIN_ID } from '@/lib/contracts/deployments';
 import { formatUnits } from 'viem';
-import { getTransactionErrorMessage } from '@/lib/utils/transaction';
+import { getTransactionErrorMessage, toastTxSuccess } from '@/lib/utils/transaction';
 
 interface FaucetProps {
   variant?: 'default' | 'compact';
@@ -82,7 +82,7 @@ export function Faucet({ variant = 'default', showAlways = false }: FaucetProps)
         await publicClient.waitForTransactionReceipt({ hash });
       }
 
-      toast.success('Received 10,000 USDC!', { id: 'faucet' });
+      toastTxSuccess('Received 10,000 USDC!', hash, 'faucet');
 
       // Refresh balance
       if (walletAddress && publicClient) {
@@ -124,7 +124,7 @@ export function Faucet({ variant = 'default', showAlways = false }: FaucetProps)
         onClick={handleFaucet}
         disabled={isLoading}
         size="sm"
-        className="bg-blue-600 hover:bg-blue-700 text-white"
+        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25"
       >
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -151,7 +151,7 @@ export function Faucet({ variant = 'default', showAlways = false }: FaucetProps)
         onClick={handleFaucet}
         disabled={isLoading}
         size="sm"
-        className="bg-blue-600 hover:bg-blue-700 text-white"
+        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25"
       >
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />

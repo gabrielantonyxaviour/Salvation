@@ -326,7 +326,7 @@ export default function HomePageContent() {
                 Every project has an integrated prediction market. Trade YES/NO tokens based on your conviction about project success. Hedge your bond positions or speculate on outcomes.
               </p>
               <Link href="/markets">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25">
                   Explore Markets
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

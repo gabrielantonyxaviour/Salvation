@@ -250,6 +250,234 @@ app.post('/mark-failed', async (req, res) => {
   }
 });
 
+// ============ Application Review Endpoints ============
+
+/**
+ * Review an application (off-chain project submission)
+ * This handles the chat-based review process before on-chain creation
+ */
+app.post('/analyze-application', async (req, res) => {
+  try {
+    const { prompt, application, history, startAnalysis } = req.body;
+
+    if (!prompt && !application) {
+      return res.status(400).json({ error: 'prompt or application is required' });
+    }
+
+    console.log('\n========================================');
+    console.log('Application Review Request');
+    console.log('========================================\n');
+
+    let responseText = '';
+
+    if (startAnalysis && application) {
+      // Initial analysis - gather data and provide comprehensive review
+      console.log(`Analyzing application: ${application.project_name}`);
+      console.log(`Location: ${application.region}, ${application.country}`);
+      console.log(`Category: ${application.category}`);
+      console.log(`Funding: $${application.funding_goal}`);
+
+      // Use services if oracle is available
+      let newsInfo = '';
+      let locationInfo = '';
+
+      if (oracle) {
+        try {
+          // Check news coverage
+          const newsService = (oracle as any).newsService;
+          if (newsService) {
+            const newsResult = await newsService.checkProjectNews(
+              application.project_name,
+              `${application.region} ${application.country}`,
+              [application.category]
+            );
+            newsInfo = `\nNews Coverage: Found ${newsResult.totalResults} articles, ${newsResult.relevantMentions} relevant mentions.`;
+            if (newsResult.articles.length > 0) {
+              newsInfo += `\nTop headlines: ${newsResult.articles.slice(0, 3).map((a: any) => a.title).join('; ')}`;
+            }
+          }
+
+          // Verify location
+          const mapsService = (oracle as any).mapsService;
+          if (mapsService && application.latitude && application.longitude) {
+            const locationResult = await mapsService.verifyLocation(
+              application.latitude,
+              application.longitude,
+              `${application.region}, ${application.country}`
+            );
+            locationInfo = `\nLocation Verification: ${locationResult.verified ? 'Verified' : 'Unverified'} (${(locationResult.matchScore * 100).toFixed(0)}% match)`;
+            if (locationResult.locationData) {
+              locationInfo += `\nResolved to: ${locationResult.locationData.displayName}`;
+            }
+          }
+        } catch (error) {
+          console.log('External data gathering had errors, continuing with prompt-based analysis');
+        }
+      }
+
+      // Build comprehensive analysis prompt with Amara's persona
+      const analysisPrompt = `${AMARA_PERSONA}
+
+You are reviewing a new project application. This is your initial analysis - be warm and encouraging while being thorough about your assessment.
+
+PROJECT APPLICATION:
+- Name: ${application.project_name}
+- Category: ${application.category}
+- Location: ${application.region}, ${application.country}
+${application.latitude && application.longitude ? `- Coordinates: ${application.latitude}, ${application.longitude}` : ''}
+- Description: ${application.description}
+- Funding Goal: $${Number(application.funding_goal).toLocaleString()} USDC
+- Bond Price: $${application.bond_price} per bond
+- Projected APY: ${application.projected_apy}%
+- Revenue Model: ${application.revenue_model}
+- Milestones: ${JSON.stringify(application.milestones, null, 2)}
+${newsInfo}
+${locationInfo}
+
+Provide your initial analysis. Include these sections (use your warm, conversational voice):
+
+## First Impressions
+Share your gut reaction - what excites you about this project?
+
+## What I Love
+Highlight the strengths you see in this application.
+
+## Let's Talk About...
+Areas that concern you or need clarification - be direct but supportive.
+
+## Questions for You
+The specific questions you need answered. Ask like you're genuinely curious, not interrogating.
+
+## Initial Thoughts on Terms
+Any suggestions about the funding amount, APY, or milestones.
+
+Remember: You want this project to succeed! Start a genuine dialogue. Do NOT approve yet - you need more information first.`;
+
+      // Call Claude for analysis - NO FALLBACK, throw error if fails
+      const ClaudeClient = (await import('./services/claude.js')).default;
+      const claude = new ClaudeClient();
+      const result = await claude.chat(analysisPrompt, { model: 'sonnet', maxTurns: 1 });
+      responseText = result.response;
+    } else if (prompt) {
+      // Follow-up conversation - NO FALLBACK, throw error if fails
+      const conversationPrompt = buildConversationPrompt(application, history || [], prompt);
+
+      const ClaudeClient = (await import('./services/claude.js')).default;
+      const claude = new ClaudeClient();
+      const result = await claude.chat(conversationPrompt, { model: 'sonnet', maxTurns: 1 });
+      responseText = result.response;
+    }
+
+    console.log(`\nResponse generated (${responseText.length} chars)`);
+
+    res.json({
+      response: responseText,
+      analysis: responseText,
+    });
+  } catch (error: any) {
+    console.error('Application review error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Amara Okonkwo - The Development Advisor
+// Former World Bank infrastructure analyst who left to help grassroots projects get fair funding.
+// Warm but thorough, asks probing questions with genuine curiosity, celebrates good projects.
+const AMARA_PERSONA = `You are Amara Okonkwo, a former World Bank infrastructure analyst who now reviews project applications for Salvation, a decentralized bond platform funding African infrastructure.
+
+PERSONALITY:
+- Warm, encouraging, but thorough - you genuinely want projects to succeed
+- You've seen hundreds of projects succeed and fail, so you know what works
+- You ask probing questions out of genuine curiosity, not skepticism
+- You celebrate strengths while being direct about concerns
+- You think like both an investor AND a community advocate
+- You use conversational language, occasionally sharing relevant experiences
+
+VOICE EXAMPLES:
+- "I love what you're building here! Let me ask a few questions to make sure we set you up for success."
+- "This reminds me of a solar project in Tanzania that faced similar challenges..."
+- "Your team's experience is impressive. Now, let's talk about the funding allocation..."
+- "I want to be direct with you - the APY projection concerns me. Here's why..."`;
+
+// Helper functions for application review
+function buildConversationPrompt(application: any, history: any[], userMessage: string): string {
+  const historyText = history
+    .filter((m: any) => m.role !== 'system')
+    .map((m: any) => `${m.role.toUpperCase()}: ${m.content}`)
+    .join('\n\n');
+
+  return `${AMARA_PERSONA}
+
+PROJECT UNDER REVIEW: ${application?.project_name || 'Unknown'} (${application?.category || 'infrastructure'})
+Location: ${application?.region || 'Unknown'}, ${application?.country || 'Unknown'}
+Funding: $${application?.funding_goal?.toLocaleString() || '0'} at ${application?.projected_apy || '0'}% APY
+
+CONVERSATION HISTORY:
+${historyText}
+
+APPLICANT: ${userMessage}
+
+Respond as Amara. Continue the review process with your characteristic warmth and thoroughness.
+
+GUIDELINES:
+- If the applicant has satisfactorily addressed your concerns and the project looks viable, warmly indicate you're ready to APPROVE
+- If there are still issues, be direct but supportive about what needs addressing
+- Share relevant insights from your experience when helpful
+- Celebrate wins and acknowledge good answers
+
+If you decide to approve, say something like "I'm genuinely excited about this project - I'm ready to APPROVE this application!" and summarize the final agreed terms.`;
+}
+
+function generateFallbackAnalysis(application: any): string {
+  return `## First Impressions
+
+Hello! I'm Amara, and I'm genuinely excited to review **${application.project_name}**. ${application.category} projects in ${application.region}, ${application.country} are exactly what Salvation was built for - bringing real infrastructure funding to communities that need it.
+
+## What I Love
+
+Let me tell you what caught my eye:
+- You've put together a clear vision with defined milestones - that tells me you've thought this through
+- The revenue model (${application.revenue_model}) shows you're thinking about sustainability, not just the initial build
+- $${Number(application.funding_goal).toLocaleString()} is an ambitious but focused goal
+
+## Let's Talk About...
+
+Now, I want to set you up for success, so let me be direct about a few things:
+
+1. **The Numbers**: Your ${application.projected_apy}% APY projection is interesting. I've seen similar projects succeed and struggle with these targets - I'd love to understand your assumptions better.
+
+2. **The Budget**: How are you planning to allocate that $${Number(application.funding_goal).toLocaleString()}? A detailed breakdown really helps our investors feel confident.
+
+3. **Risk Planning**: What happens if things don't go according to plan? Weather delays, permit issues, supply chain problems - I've seen them all. What's your backup plan?
+
+## Questions for You
+
+I'm genuinely curious about a few things:
+- Have you started any conversations with local authorities about permits or approvals?
+- What's your team's experience with projects like this? Even similar smaller projects count!
+- How are you planning to keep bond holders in the loop as the project progresses?
+
+## Initial Thoughts on Terms
+
+Let's keep this conversation going! Once I understand more about your approach, we can fine-tune the funding terms together. I want this to work for everyone - you, the community, and our investors.
+
+Looking forward to your responses! 🌍`;
+}
+
+function generateFallbackResponse(userMessage: string): string {
+  return `Thanks for sharing that! I appreciate you taking the time to explain.
+
+This is really helpful context. A few things are becoming clearer to me now, but I'd love to dig a bit deeper:
+
+1. **Timeline**: Walk me through how you see the implementation unfolding. What are the key milestones we should be tracking?
+
+2. **Team**: Tell me more about who's driving this. Your team's experience matters a lot - even adjacent experience counts!
+
+3. **Contingencies**: What keeps you up at night about this project? Understanding your risks helps me understand your planning.
+
+I've reviewed hundreds of projects, and the ones that succeed are usually the ones where the team has really thought through the "what ifs." Let's make sure yours is one of them! 💪`;
+}
+
 // ============ Demo Endpoints ============
 
 /**
@@ -333,6 +561,7 @@ app.listen(PORT, () => {
   console.log(`  GET  /status/:id          - Get verification status`);
   console.log(`  POST /verify              - Verify a milestone`);
   console.log(`  POST /analyze-project     - Analyze new project`);
+  console.log(`  POST /analyze-application - Review application chat`);
   console.log(`  POST /setup-milestones    - Setup project milestones`);
   console.log(`  POST /mark-failed         - Mark project as failed`);
   console.log(`  POST /demo/verify         - Demo verification flow`);

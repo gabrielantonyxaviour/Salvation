@@ -23,18 +23,21 @@ export const mantleSepolia = defineChain({
   testnet: true,
 });
 
-// Privy configuration - email only, embedded wallets
+// Privy configuration - email and web3 wallets
 export const privyConfig: PrivyClientConfig = {
-  loginMethods: ['email'],
+  loginMethods: ['email', 'wallet'],
   appearance: {
     theme: 'dark',
-    accentColor: '#F97316',
+    accentColor: '#f97316',
     logo: '/images/logo.png',
     showWalletLoginFirst: false,
+    landingHeader: 'Connect to Salvation',
+    walletChainType: 'ethereum-only',
+    walletList: ['metamask', 'coinbase_wallet', 'rainbow', 'wallet_connect'],
   },
   embeddedWallets: {
     ethereum: {
-      createOnLogin: 'all-users',
+      createOnLogin: 'users-without-wallets',
     },
   },
   defaultChain: mantleSepolia,

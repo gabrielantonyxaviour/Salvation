@@ -24,7 +24,7 @@ export const config = {
   },
 
   // Claude Service (local claude-code wrapper)
-  claudeServiceUrl: process.env.CLAUDE_SERVICE_URL || 'http://localhost:3000',
+  claudeServiceUrl: process.env.CLAUDE_SERVICE_URL || 'http://localhost:3002',
   claudeServiceApiKey: process.env.CLAUDE_SERVICE_API_KEY || '',
 
   // News API

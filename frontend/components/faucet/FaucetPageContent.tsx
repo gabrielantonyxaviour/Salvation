@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { formatUnits } from 'viem';
 import { MockUSDCABI } from '@/lib/contracts/abis';
 import { getContracts, MANTLE_SEPOLIA_CHAIN_ID } from '@/lib/contracts/deployments';
-import { getTransactionErrorMessage } from '@/lib/utils/transaction';
+import { getTransactionErrorMessage, toastTxSuccess } from '@/lib/utils/transaction';
 
 export default function FaucetPageContent() {
   const { authenticated, ready, login } = usePrivy();
@@ -92,7 +92,7 @@ export default function FaucetPageContent() {
       }
 
       setLastTxHash(hash);
-      toast.success('Received 10,000 USDC!', { id: 'faucet' });
+      toastTxSuccess('Received 10,000 USDC!', hash, 'faucet');
 
       // Refresh balances
       if (walletAddress && publicClient) {
@@ -134,7 +134,7 @@ export default function FaucetPageContent() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Test USDC Faucet</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Test USDC Faucet</h1>
           <p className="text-neutral-400">
             Get free test USDC to explore Salvation on Mantle Sepolia
           </p>
@@ -208,7 +208,7 @@ export default function FaucetPageContent() {
                   onClick={handleFaucet}
                   disabled={isLoading}
                   size="lg"
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white h-14 text-lg"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white h-14 text-lg shadow-lg shadow-orange-500/25"
                 >
                   {isLoading ? (
                     <>

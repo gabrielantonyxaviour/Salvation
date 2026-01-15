@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import { useReadContracts, useWriteContract } from 'wagmi';
 import { formatUnits } from 'viem';
 import { toast } from 'sonner';
+import { toastTxSuccess, getTransactionErrorMessage } from '@/lib/utils/transaction';
 import OutcomeTokenABI from '../abis/OutcomeToken.json';
 import LMSRMarketABI from '../abis/LMSRMarket.json';
 
@@ -113,19 +114,19 @@ export function useMarketPositions({
     try {
       toast.loading('Claiming winnings...', { id: 'claim' });
 
-      await writeContractAsync({
+      const hash = await writeContractAsync({
         address: marketAddress,
         abi: LMSRMarketABI,
         functionName: 'claimWinnings',
         args: [],
       });
 
-      toast.success(`Successfully claimed $${claimable.toFixed(2)}!`, { id: 'claim' });
+      toastTxSuccess(`Successfully claimed $${claimable.toFixed(2)}!`, hash, 'claim');
 
       // Refetch balances
       refetch();
     } catch (err) {
-      toast.error('Failed to claim winnings', { id: 'claim' });
+      toast.error(getTransactionErrorMessage(err), { id: 'claim' });
       throw err;
     }
   }, [marketAddress, resolved, claimable, writeContractAsync, refetch]);

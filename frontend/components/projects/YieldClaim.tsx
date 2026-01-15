@@ -68,7 +68,7 @@ export function YieldClaim({ project }: YieldClaimProps) {
               <Button
                 onClick={handleClaim}
                 disabled={isClaiming || !hasClaimable}
-                className="bg-green-500 hover:bg-green-600 text-white"
+                className="bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/25"
               >
                 {isClaiming ? (
                   <>
@@ -88,7 +88,7 @@ export function YieldClaim({ project }: YieldClaimProps) {
         {!authenticated && (
           <Button
             onClick={login}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/25"
           >
             Login to View Your Yield
           </Button>

@@ -58,10 +58,10 @@ function MarketGridCard({ market }: { market: Market }) {
 
   const daysUntilResolution = Math.max(
     0,
-    Math.ceil((market.resolutionTime * 1000 - Date.now()) / (1000 * 60 * 60 * 24))
+    Math.ceil((market.resolutionTime - Date.now()) / (1000 * 60 * 60 * 24))
   );
 
-  const resolutionDate = new Date(market.resolutionTime * 1000).toLocaleDateString('en-US', {
+  const resolutionDate = new Date(market.resolutionTime).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
   });

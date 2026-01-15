@@ -49,9 +49,13 @@ export function ClientProviders({ children }: ClientProvidersProps) {
     };
   }, []);
 
-  // During SSR/SSG, just render children without providers
+  // During SSR/SSG, still wrap with QueryClient for hooks to work
   if (!mounted) {
-    return <>{children}</>;
+    return (
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    );
   }
 
   const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;

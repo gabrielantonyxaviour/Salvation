@@ -1,6 +1,24 @@
+import { toast } from 'sonner';
+
 /**
  * Utility functions for handling blockchain transactions gracefully
  */
+
+const EXPLORER_URL = 'https://sepolia.mantlescan.xyz';
+
+/**
+ * Shows a success toast with a "View Tx" action button
+ */
+export function toastTxSuccess(message: string, txHash: string, id?: string) {
+  toast.success(message, {
+    id,
+    action: {
+      label: 'View Tx',
+      onClick: () => window.open(`${EXPLORER_URL}/tx/${txHash}`, '_blank'),
+    },
+    duration: 5000,
+  });
+}
 
 /**
  * Checks if an error is a user rejection

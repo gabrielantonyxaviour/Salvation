@@ -132,7 +132,7 @@ export function TradingPanel({ market }: TradingPanelProps) {
             isClaiming={isClaiming}
           />
         ) : (
-          <Button onClick={() => login()} className="w-full bg-orange-500 hover:bg-orange-600">
+          <Button onClick={() => login()} className="w-full bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25">
             Login to View Positions
           </Button>
         )}
@@ -147,16 +147,16 @@ export function TradingPanel({ market }: TradingPanelProps) {
       {/* Side Toggle */}
       <div className="flex gap-2 mb-4">
         <Button
-          variant={side === 'yes' ? 'default' : 'outline'}
+          variant="outline"
           onClick={() => setSide('yes')}
-          className={side === 'yes' ? 'bg-green-600 hover:bg-green-700 flex-1' : 'border-neutral-700 flex-1'}
+          className={side === 'yes' ? 'bg-green-600 hover:bg-green-700 border-green-600 text-white shadow-none flex-1' : 'border-neutral-700 shadow-none flex-1'}
         >
           YES
         </Button>
         <Button
-          variant={side === 'no' ? 'default' : 'outline'}
+          variant="outline"
           onClick={() => setSide('no')}
-          className={side === 'no' ? 'bg-red-600 hover:bg-red-700 flex-1' : 'border-neutral-700 flex-1'}
+          className={side === 'no' ? 'bg-red-600 hover:bg-red-700 border-red-600 text-white shadow-none flex-1' : 'border-neutral-700 shadow-none flex-1'}
         >
           NO
         </Button>
@@ -165,16 +165,16 @@ export function TradingPanel({ market }: TradingPanelProps) {
       {/* Action Toggle */}
       <div className="flex gap-2 mb-4">
         <Button
-          variant={action === 'buy' ? 'default' : 'outline'}
+          variant="outline"
           onClick={() => setAction('buy')}
-          className={action === 'buy' ? 'bg-neutral-700 flex-1' : 'border-neutral-700 flex-1'}
+          className={action === 'buy' ? 'bg-neutral-700 hover:bg-neutral-600 border-neutral-700 text-white shadow-none flex-1' : 'border-neutral-700 shadow-none flex-1'}
         >
           BUY
         </Button>
         <Button
-          variant={action === 'sell' ? 'default' : 'outline'}
+          variant="outline"
           onClick={() => setAction('sell')}
-          className={action === 'sell' ? 'bg-neutral-700 flex-1' : 'border-neutral-700 flex-1'}
+          className={action === 'sell' ? 'bg-neutral-700 hover:bg-neutral-600 border-neutral-700 text-white shadow-none flex-1' : 'border-neutral-700 shadow-none flex-1'}
         >
           SELL
         </Button>
@@ -245,14 +245,14 @@ export function TradingPanel({ market }: TradingPanelProps) {
 
       {/* Execute Button */}
       {!authenticated ? (
-        <Button onClick={() => login()} className="w-full bg-orange-500 hover:bg-orange-600">
+        <Button onClick={() => login()} className="w-full bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25">
           Login to Trade
         </Button>
       ) : needsApproval && action === 'buy' ? (
         <Button
           onClick={() => approve(parseUnits('1000000', 6))}
           disabled={isApproving || !shares || shares <= 0}
-          className="w-full bg-orange-500 hover:bg-orange-600"
+          className="w-full bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25"
         >
           {isApproving ? 'Approving...' : 'Approve USDC'}
         </Button>
@@ -268,7 +268,7 @@ export function TradingPanel({ market }: TradingPanelProps) {
             insufficientShares
           }
           className={`w-full ${
-            side === 'yes' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
+            side === 'yes' ? 'bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/25' : 'bg-red-600 hover:bg-red-700 shadow-lg shadow-red-600/25'
           }`}
         >
           {isTrading

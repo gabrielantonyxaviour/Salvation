@@ -46,7 +46,7 @@ export function MarketList({ markets, loading = false }: MarketListProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-4">
       {markets.map((market) => (
         <MarketCard key={market.id} market={market} />
       ))}

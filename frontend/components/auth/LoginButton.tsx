@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, User, ChevronDown, Copy, ExternalLink, Droplets } from 'lucide-react';
+import { LogOut, User, ChevronDown, Copy, ExternalLink, Droplets, Wallet } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatUnits, createPublicClient, http } from 'viem';
 import { mantleSepoliaTestnet } from 'viem/chains';
@@ -228,6 +228,13 @@ export function LoginButton() {
               >
                 <Droplets className="h-4 w-4 mr-2" />
                 Faucet
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push('/portfolio')}
+                className="cursor-pointer hover:bg-neutral-800"
+              >
+                <Wallet className="h-4 w-4 mr-2" />
+                Portfolio
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-neutral-800" />
             </>

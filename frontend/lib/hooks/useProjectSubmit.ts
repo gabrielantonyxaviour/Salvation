@@ -7,6 +7,7 @@ import { encodeFunctionData, parseUnits } from 'viem';
 import { mantleSepoliaContracts, areContractsDeployed, MANTLE_SEPOLIA_CHAIN_ID } from '../contracts/deployments';
 import { ProjectRegistryABI } from '../contracts/abis';
 import { toast } from 'sonner';
+import { toastTxSuccess, getTransactionErrorMessage } from '@/lib/utils/transaction';
 import { uploadToIPFS } from '../ipfs/upload';
 
 export interface ProjectFormData {
@@ -138,7 +139,9 @@ export function useProjectSubmit(): UseProjectSubmitReturn {
       const newProjectId = `0x${Date.now().toString(16)}`;
       setProjectId(newProjectId);
 
-      toast.success('Project submitted successfully!', { id: 'project-submit' });
+      // Privy's sendTransaction returns { hash: string } or the hash directly
+      const txHash = typeof txResult === 'string' ? txResult : txResult.hash || (txResult as any).transactionHash;
+      toastTxSuccess('Project submitted successfully!', txHash, 'project-submit');
 
       // Invalidate projects query to refresh the list
       queryClient.invalidateQueries({ queryKey: ['projects'] });
@@ -146,7 +149,7 @@ export function useProjectSubmit(): UseProjectSubmitReturn {
       return newProjectId;
     } catch (err) {
       console.error('Project submission error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to submit project';
+      const errorMessage = getTransactionErrorMessage(err);
       setError(errorMessage);
       toast.error(errorMessage, { id: 'project-submit' });
       return null;

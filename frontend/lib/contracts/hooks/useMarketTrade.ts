@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { parseUnits, formatUnits } from 'viem';
 import { toast } from 'sonner';
-import { getTransactionErrorMessage } from '@/lib/utils/transaction';
+import { getTransactionErrorMessage, toastTxSuccess } from '@/lib/utils/transaction';
 import LMSRMarketABI from '../abis/LMSRMarket.json';
 import ERC20ABI from '../abis/ERC20.json';
 import { calculateCost, calculateReturn, calculatePriceImpact } from '@/lib/utils/lmsr';
@@ -99,7 +99,7 @@ export function useMarketTrade({
       await new Promise(resolve => setTimeout(resolve, 2000));
       await refetchAllowance();
 
-      toast.success('USDC approved!', { id: 'approve' });
+      toastTxSuccess('USDC approved!', hash, 'approve');
     } catch (err) {
       toast.error(getTransactionErrorMessage(err), { id: 'approve' });
       throw err;
@@ -129,7 +129,7 @@ export function useMarketTrade({
         args: [sharesWad],
       });
 
-      toast.success(`Successfully bought ${shares} ${side.toUpperCase()} shares!`, { id: 'trade' });
+      toastTxSuccess(`Successfully bought ${shares} ${side.toUpperCase()} shares!`, hash, 'trade');
     } catch (err) {
       toast.error(getTransactionErrorMessage(err), { id: 'trade' });
       throw err;
@@ -159,7 +159,7 @@ export function useMarketTrade({
         args: [sharesWad],
       });
 
-      toast.success(`Successfully sold ${shares} ${side.toUpperCase()} shares!`, { id: 'trade' });
+      toastTxSuccess(`Successfully sold ${shares} ${side.toUpperCase()} shares!`, hash, 'trade');
     } catch (err) {
       toast.error(getTransactionErrorMessage(err), { id: 'trade' });
       throw err;

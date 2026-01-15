@@ -15,8 +15,10 @@ export class ClaudeClient {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = config.claudeServiceUrl;
+    // Always use local Claude service for development
+    this.baseUrl = 'http://localhost:3002';
     this.apiKey = config.claudeServiceApiKey;
+    console.log(`ClaudeClient using: ${this.baseUrl}`);
   }
 
   /**

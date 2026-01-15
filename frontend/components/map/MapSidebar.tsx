@@ -105,7 +105,7 @@ export default function MapSidebar({
     <div className="w-80 h-full flex flex-col bg-neutral-950 border-r border-neutral-800">
       {/* Header */}
       <div className="px-6 py-6 border-b border-neutral-800">
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="text-xl md:text-2xl font-bold text-white">
           Project Map
         </h2>
         <p className="text-sm mt-1 text-neutral-400">
@@ -386,7 +386,7 @@ export default function MapSidebar({
 
             <div className="flex gap-2">
               <Link href={`/projects/${selectedProject.id}`} className="flex-1">
-                <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+                <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/25">
                   View Details
                 </Button>
               </Link>

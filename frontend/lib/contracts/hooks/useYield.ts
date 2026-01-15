@@ -8,7 +8,7 @@ import { encodeFunctionData } from 'viem';
 import { mantleSepoliaContracts, areContractsDeployed, MANTLE_SEPOLIA_CHAIN_ID } from '../deployments';
 import { YieldVaultABI } from '../abis';
 import { toast } from 'sonner';
-import { getTransactionErrorMessage } from '@/lib/utils/transaction';
+import { getTransactionErrorMessage, toastTxSuccess } from '@/lib/utils/transaction';
 import type { YieldInfo } from '@/types';
 
 interface UseYieldReturn {
@@ -106,12 +106,14 @@ export function useYield(projectId?: string): UseYieldReturn {
         args: [projectId as `0x${string}`],
       });
 
-      await sendTransaction({
+      const txResult = await sendTransaction({
         to: mantleSepoliaContracts.yieldVault,
         data,
       });
 
-      toast.success('Yield claimed successfully!');
+      // Privy's sendTransaction returns { hash: string } or the hash directly
+      const txHash = typeof txResult === 'string' ? txResult : txResult.hash || (txResult as any).transactionHash;
+      toastTxSuccess('Yield claimed successfully!', txHash);
 
       // Refetch relevant data
       refetchClaimable();

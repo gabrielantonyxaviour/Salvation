@@ -8,7 +8,7 @@ import { encodeFunctionData, parseUnits, formatUnits } from 'viem';
 import { mantleSepoliaContracts, areContractsDeployed, MANTLE_SEPOLIA_CHAIN_ID } from '../deployments';
 import { BondFactoryABI, ERC20ABI, BondTokenABI } from '../abis';
 import { toast } from 'sonner';
-import { getTransactionErrorMessage } from '@/lib/utils/transaction';
+import { getTransactionErrorMessage, toastTxSuccess } from '@/lib/utils/transaction';
 
 interface UseBondPurchaseReturn {
   allowance: bigint;
@@ -114,12 +114,14 @@ export function useBondPurchase(projectId?: string): UseBondPurchaseReturn {
         args: [mantleSepoliaContracts.bondFactory, amount],
       });
 
-      await sendTransaction({
+      const txResult = await sendTransaction({
         to: mantleSepoliaContracts.usdc,
         data,
       });
 
-      toast.success('USDC approved!');
+      // Privy's sendTransaction returns { hash: string } or the hash directly
+      const txHash = typeof txResult === 'string' ? txResult : txResult.hash || (txResult as any).transactionHash;
+      toastTxSuccess('USDC approved!', txHash);
       refetchAllowance();
     } catch (error) {
       console.error('Approve error:', error);
@@ -150,12 +152,14 @@ export function useBondPurchase(projectId?: string): UseBondPurchaseReturn {
         args: [projectId as `0x${string}`, usdcAmount],
       });
 
-      await sendTransaction({
+      const txResult = await sendTransaction({
         to: mantleSepoliaContracts.bondFactory,
         data,
       });
 
-      toast.success('Bonds purchased successfully!');
+      // Privy's sendTransaction returns { hash: string } or the hash directly
+      const txHash = typeof txResult === 'string' ? txResult : txResult.hash || (txResult as any).transactionHash;
+      toastTxSuccess('Bonds purchased successfully!', txHash);
 
       // Refetch relevant data
       refetchAllowance();

@@ -66,7 +66,7 @@ function PortfolioContent() {
           <p className="text-neutral-400 mb-6">
             Login to view your bond holdings and prediction market positions.
           </p>
-          <Button onClick={login} className="bg-orange-500 hover:bg-orange-600">
+          <Button onClick={login} className="bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25">
             Login to View Portfolio
           </Button>
         </Card>
@@ -79,7 +79,7 @@ function PortfolioContent() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-white">My Portfolio</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-white">My Portfolio</h1>
           <Button
             variant="outline"
             size="sm"
@@ -115,7 +115,7 @@ function PortfolioContent() {
               <Button
                 variant={activeTab === 'bonds' ? 'default' : 'outline'}
                 onClick={() => setActiveTab('bonds')}
-                className={activeTab === 'bonds' ? 'bg-orange-500 hover:bg-orange-600' : 'border-neutral-700 text-white'}
+                className={activeTab === 'bonds' ? 'bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25' : 'border-neutral-700 text-white'}
               >
                 Bond Holdings
                 {holdings.length > 0 && (
@@ -127,7 +127,7 @@ function PortfolioContent() {
               <Button
                 variant={activeTab === 'positions' ? 'default' : 'outline'}
                 onClick={() => setActiveTab('positions')}
-                className={activeTab === 'positions' ? 'bg-orange-500 hover:bg-orange-600' : 'border-neutral-700 text-white'}
+                className={activeTab === 'positions' ? 'bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25' : 'border-neutral-700 text-white'}
               >
                 Prediction Positions
                 {positions.length > 0 && (
@@ -153,7 +153,7 @@ function PortfolioContent() {
                 <Button
                   onClick={handleClaimAll}
                   disabled={isClaimingAll}
-                  className="bg-green-600 hover:bg-green-700"
+                  className="bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/25"
                 >
                   {isClaimingAll ? (
                     <>
@@ -176,7 +176,7 @@ function PortfolioContent() {
                 </p>
                 <div className="flex gap-4 justify-center">
                   <Link href="/projects">
-                    <Button className="bg-orange-500 hover:bg-orange-600">
+                    <Button className="bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25">
                       Browse Projects
                     </Button>
                   </Link>

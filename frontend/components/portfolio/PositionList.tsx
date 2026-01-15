@@ -92,7 +92,7 @@ function PositionRow({ position, onClaimSuccess }: { position: MarketPosition; o
             size="sm"
             onClick={handleClaim}
             disabled={isClaiming}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/25"
           >
             {isClaiming ? (
               <>
@@ -123,7 +123,7 @@ export function PositionList({ positions, onClaimSuccess }: PositionListProps) {
       <Card className="p-8 bg-neutral-900/50 border-neutral-800 text-center">
         <p className="text-neutral-400 mb-4">You don't have any prediction positions yet.</p>
         <Link href="/markets">
-          <Button className="bg-orange-500 hover:bg-orange-600">
+          <Button className="bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25">
             Browse Markets
           </Button>
         </Link>

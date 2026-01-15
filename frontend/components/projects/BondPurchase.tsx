@@ -143,7 +143,7 @@ export function BondPurchase({ project }: BondPurchaseProps) {
           {!authenticated ? (
             <Button
               onClick={login}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/25"
             >
               Login to Purchase
             </Button>
@@ -151,7 +151,7 @@ export function BondPurchase({ project }: BondPurchaseProps) {
             <Button
               onClick={handleApprove}
               disabled={isApproving || !isValidAmount}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25"
             >
               {isApproving ? (
                 <>
@@ -166,7 +166,7 @@ export function BondPurchase({ project }: BondPurchaseProps) {
             <Button
               onClick={handlePurchase}
               disabled={isPurchasing || !isValidAmount || hasInsufficientBalance}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/25"
             >
               {isPurchasing ? (
                 <>

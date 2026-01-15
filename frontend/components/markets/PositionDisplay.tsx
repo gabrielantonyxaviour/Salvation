@@ -101,7 +101,7 @@ export function PositionDisplay({
         <Button
           onClick={onClaim}
           disabled={isClaiming}
-          className="w-full bg-green-600 hover:bg-green-700"
+          className="w-full bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/25"
         >
           {isClaiming ? 'Claiming...' : `Claim $${claimable.toFixed(2)}`}
         </Button>

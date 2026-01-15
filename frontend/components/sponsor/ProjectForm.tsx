@@ -14,39 +14,58 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useProjectSubmit, type ProjectFormData } from '@/lib/hooks';
-import { Check, Loader2, Plus, X, AlertCircle } from 'lucide-react';
+import { useProjectReview } from '@/lib/hooks';
+import { Check, Loader2, Plus, X, AlertCircle, Bot } from 'lucide-react';
+import { toast } from 'sonner';
+
+interface ProjectFormProps {
+  walletAddress: string;
+}
 
 const steps = [
-  { id: 1, title: 'Business Info', description: 'Organization details' },
-  { id: 2, title: 'Project Details', description: 'Project information' },
-  { id: 3, title: 'Funding', description: 'Funding goals' },
-  { id: 4, title: 'Milestones', description: 'Project milestones' },
-  { id: 5, title: 'Review', description: 'Review & submit' },
+  { id: 1, title: 'Project Details', description: 'Project information' },
+  { id: 2, title: 'Funding', description: 'Funding goals' },
+  { id: 3, title: 'Milestones', description: 'Project milestones' },
+  { id: 4, title: 'Review', description: 'Review & submit for review' },
 ];
 
 const categories = ['water', 'solar', 'education', 'healthcare', 'agriculture'];
 const countries = ['Kenya', 'Nigeria', 'Ghana', 'South Africa', 'Ethiopia', 'Tanzania', 'Uganda', 'Rwanda'];
 
-const initialFormData: ProjectFormData = {
-  orgName: '',
-  regNumber: '',
-  country: '',
-  contactEmail: '',
-  projectName: '',
-  category: '',
-  projectCountry: '',
-  region: '',
-  coordinates: { lat: '', lng: '' },
-  description: '',
-  imageUrl: '',
-  fundingGoal: '',
+interface FormData {
+  projectName: string;
+  category: string;
+  country: string;
+  region: string;
+  latitude: string;
+  longitude: string;
+  description: string;
+  imageUrl: string;
+  fundingGoal: string;
+  bondPrice: string;
+  revenueModel: string;
+  projectedAPY: string;
+  milestones: { description: string; date: string }[];
+}
+
+const initialFormData: FormData = {
+  projectName: 'Kisumu Community Solar Farm',
+  category: 'solar',
+  country: 'Kenya',
+  region: 'Kisumu',
+  latitude: '-0.0917',
+  longitude: '34.7680',
+  description: 'A community-owned solar farm project that will provide clean, renewable energy to over 500 households in the Kisumu region. The project includes installation of 200kW solar panels, battery storage systems, and a local distribution network. Revenue will be generated through monthly electricity subscriptions from connected households.',
+  imageUrl: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
+  fundingGoal: '25000',
   bondPrice: '1.00',
-  revenueModel: '',
-  projectedAPY: '',
+  revenueModel: 'Monthly electricity subscription fees from 500+ connected households at $5-10/month per household, generating $2,500-5,000 monthly revenue. Additional income from excess power sold to the national grid during peak production periods.',
+  projectedAPY: '12',
   milestones: [
-    { description: '', date: '' },
-    { description: '', date: '' },
+    { description: 'Site preparation and permits secured', date: '2025-03-01' },
+    { description: 'Solar panel installation complete', date: '2025-06-15' },
+    { description: 'Grid connection and first households connected', date: '2025-08-01' },
+    { description: 'Full operational capacity - 500 households', date: '2025-10-01' },
   ],
 };
 
@@ -54,19 +73,15 @@ interface ValidationErrors {
   [key: string]: string;
 }
 
-export function ProjectForm() {
+export function ProjectForm({ walletAddress }: ProjectFormProps) {
   const router = useRouter();
-  const { submit, isLoading } = useProjectSubmit();
+  const { submit, isSubmitting } = useProjectReview();
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<ProjectFormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const updateFormData = (field: string, value: string | object) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-    // Clear error when field is updated
+  const updateFormData = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -74,13 +89,6 @@ export function ProjectForm() {
         return newErrors;
       });
     }
-  };
-
-  const updateCoordinates = (field: 'lat' | 'lng', value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      coordinates: { ...prev.coordinates, [field]: value },
-    }));
   };
 
   const addMilestone = () => {
@@ -111,21 +119,10 @@ export function ProjectForm() {
     const newErrors: ValidationErrors = {};
 
     switch (step) {
-      case 0: // Business Info
-        if (!formData.orgName.trim()) newErrors.orgName = 'Organization name is required';
-        if (!formData.regNumber.trim()) newErrors.regNumber = 'Registration number is required';
-        if (!formData.country) newErrors.country = 'Country is required';
-        if (!formData.contactEmail.trim()) {
-          newErrors.contactEmail = 'Email is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)) {
-          newErrors.contactEmail = 'Invalid email format';
-        }
-        break;
-
-      case 1: // Project Details
+      case 0: // Project Details
         if (!formData.projectName.trim()) newErrors.projectName = 'Project name is required';
         if (!formData.category) newErrors.category = 'Category is required';
-        if (!formData.projectCountry) newErrors.projectCountry = 'Project country is required';
+        if (!formData.country) newErrors.country = 'Country is required';
         if (!formData.region.trim()) newErrors.region = 'Region is required';
         if (!formData.description.trim()) {
           newErrors.description = 'Description is required';
@@ -134,7 +131,7 @@ export function ProjectForm() {
         }
         break;
 
-      case 2: // Funding
+      case 1: // Funding
         if (!formData.fundingGoal || parseFloat(formData.fundingGoal) <= 0) {
           newErrors.fundingGoal = 'Valid funding goal is required';
         }
@@ -144,7 +141,7 @@ export function ProjectForm() {
         }
         break;
 
-      case 3: // Milestones
+      case 2: // Milestones
         const validMilestones = formData.milestones.filter(m => m.description.trim() && m.date);
         if (validMilestones.length < 2) {
           newErrors.milestones = 'At least 2 complete milestones are required';
@@ -169,9 +166,34 @@ export function ProjectForm() {
   const handleSubmit = async () => {
     if (!validateStep(currentStep)) return;
 
-    const projectId = await submit(formData);
-    if (projectId) {
-      router.push(`/projects/${projectId}`);
+    try {
+      const application = await submit({
+        wallet_address: walletAddress,
+        project_name: formData.projectName,
+        description: formData.description,
+        category: formData.category,
+        image_url: formData.imageUrl || null,
+        country: formData.country,
+        region: formData.region,
+        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
+        funding_goal: parseFloat(formData.fundingGoal),
+        bond_price: parseFloat(formData.bondPrice),
+        revenue_model: formData.revenueModel,
+        projected_apy: parseFloat(formData.projectedAPY),
+        milestones: formData.milestones
+          .filter(m => m.description.trim() && m.date)
+          .map(m => ({
+            description: m.description,
+            target_date: m.date,
+          })),
+      });
+
+      if (application) {
+        router.push(`/review/${application.id}`);
+      }
+    } catch (error) {
+      toast.error('Failed to submit application');
     }
   };
 
@@ -217,61 +239,8 @@ export function ProjectForm() {
           <p className="text-sm text-neutral-400">{steps[currentStep].description}</p>
         </div>
 
-        {/* Step 1: Business Info */}
+        {/* Step 1: Project Details */}
         {currentStep === 0 && (
-          <div className="space-y-4">
-            <div>
-              <Label className="text-neutral-300">Organization Name *</Label>
-              <Input
-                value={formData.orgName}
-                onChange={(e) => updateFormData('orgName', e.target.value)}
-                placeholder="Kisumu Water Trust"
-                className={`bg-neutral-800 border-neutral-700 text-white mt-1 ${errors.orgName ? 'border-red-500' : ''}`}
-              />
-              {errors.orgName && <p className="text-red-400 text-sm mt-1">{errors.orgName}</p>}
-            </div>
-            <div>
-              <Label className="text-neutral-300">Registration Number *</Label>
-              <Input
-                value={formData.regNumber}
-                onChange={(e) => updateFormData('regNumber', e.target.value)}
-                placeholder="REG-12345"
-                className={`bg-neutral-800 border-neutral-700 text-white mt-1 ${errors.regNumber ? 'border-red-500' : ''}`}
-              />
-              {errors.regNumber && <p className="text-red-400 text-sm mt-1">{errors.regNumber}</p>}
-            </div>
-            <div>
-              <Label className="text-neutral-300">Country *</Label>
-              <Select value={formData.country} onValueChange={(v) => updateFormData('country', v)}>
-                <SelectTrigger className={`bg-neutral-800 border-neutral-700 text-white mt-1 ${errors.country ? 'border-red-500' : ''}`}>
-                  <SelectValue placeholder="Select country" />
-                </SelectTrigger>
-                <SelectContent className="bg-neutral-900 border-neutral-800">
-                  {countries.map(c => (
-                    <SelectItem key={c} value={c} className="text-white hover:bg-neutral-800">
-                      {c}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.country && <p className="text-red-400 text-sm mt-1">{errors.country}</p>}
-            </div>
-            <div>
-              <Label className="text-neutral-300">Contact Email *</Label>
-              <Input
-                type="email"
-                value={formData.contactEmail}
-                onChange={(e) => updateFormData('contactEmail', e.target.value)}
-                placeholder="contact@organization.org"
-                className={`bg-neutral-800 border-neutral-700 text-white mt-1 ${errors.contactEmail ? 'border-red-500' : ''}`}
-              />
-              {errors.contactEmail && <p className="text-red-400 text-sm mt-1">{errors.contactEmail}</p>}
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Project Details */}
-        {currentStep === 1 && (
           <div className="space-y-4">
             <div>
               <Label className="text-neutral-300">Project Name *</Label>
@@ -302,8 +271,8 @@ export function ProjectForm() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label className="text-neutral-300">Country *</Label>
-                <Select value={formData.projectCountry} onValueChange={(v) => updateFormData('projectCountry', v)}>
-                  <SelectTrigger className={`bg-neutral-800 border-neutral-700 text-white mt-1 ${errors.projectCountry ? 'border-red-500' : ''}`}>
+                <Select value={formData.country} onValueChange={(v) => updateFormData('country', v)}>
+                  <SelectTrigger className={`bg-neutral-800 border-neutral-700 text-white mt-1 ${errors.country ? 'border-red-500' : ''}`}>
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent className="bg-neutral-900 border-neutral-800">
@@ -329,8 +298,8 @@ export function ProjectForm() {
               <div>
                 <Label className="text-neutral-300">Latitude (optional)</Label>
                 <Input
-                  value={formData.coordinates.lat}
-                  onChange={(e) => updateCoordinates('lat', e.target.value)}
+                  value={formData.latitude}
+                  onChange={(e) => updateFormData('latitude', e.target.value)}
                   placeholder="-0.0917"
                   className="bg-neutral-800 border-neutral-700 text-white mt-1"
                 />
@@ -338,8 +307,8 @@ export function ProjectForm() {
               <div>
                 <Label className="text-neutral-300">Longitude (optional)</Label>
                 <Input
-                  value={formData.coordinates.lng}
-                  onChange={(e) => updateCoordinates('lng', e.target.value)}
+                  value={formData.longitude}
+                  onChange={(e) => updateFormData('longitude', e.target.value)}
                   placeholder="34.7680"
                   className="bg-neutral-800 border-neutral-700 text-white mt-1"
                 />
@@ -368,8 +337,8 @@ export function ProjectForm() {
           </div>
         )}
 
-        {/* Step 3: Funding */}
-        {currentStep === 2 && (
+        {/* Step 2: Funding */}
+        {currentStep === 1 && (
           <div className="space-y-4">
             <div>
               <Label className="text-neutral-300">Funding Goal (USDC) *</Label>
@@ -418,8 +387,8 @@ export function ProjectForm() {
           </div>
         )}
 
-        {/* Step 4: Milestones */}
-        {currentStep === 3 && (
+        {/* Step 3: Milestones */}
+        {currentStep === 2 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between mb-2">
               <p className="text-neutral-400 text-sm">Add at least 2 milestones for your project.</p>
@@ -477,30 +446,10 @@ export function ProjectForm() {
           </div>
         )}
 
-        {/* Step 5: Review */}
-        {currentStep === 4 && (
+        {/* Step 4: Review */}
+        {currentStep === 3 && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-orange-400 uppercase tracking-wider">Organization</h3>
-                <div>
-                  <p className="text-neutral-400 text-sm">Name</p>
-                  <p className="text-white">{formData.orgName || '-'}</p>
-                </div>
-                <div>
-                  <p className="text-neutral-400 text-sm">Registration</p>
-                  <p className="text-white">{formData.regNumber || '-'}</p>
-                </div>
-                <div>
-                  <p className="text-neutral-400 text-sm">Country</p>
-                  <p className="text-white">{formData.country || '-'}</p>
-                </div>
-                <div>
-                  <p className="text-neutral-400 text-sm">Email</p>
-                  <p className="text-white">{formData.contactEmail || '-'}</p>
-                </div>
-              </div>
-
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-orange-400 uppercase tracking-wider">Project</h3>
                 <div>
@@ -513,7 +462,7 @@ export function ProjectForm() {
                 </div>
                 <div>
                   <p className="text-neutral-400 text-sm">Location</p>
-                  <p className="text-white">{formData.region}, {formData.projectCountry}</p>
+                  <p className="text-white">{formData.region}, {formData.country}</p>
                 </div>
               </div>
 
@@ -533,16 +482,12 @@ export function ProjectForm() {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 md:col-span-2">
                 <h3 className="text-sm font-medium text-orange-400 uppercase tracking-wider">Milestones</h3>
-                <div>
-                  <p className="text-neutral-400 text-sm">Total Milestones</p>
-                  <p className="text-white">{formData.milestones.filter(m => m.description).length}</p>
-                </div>
                 <ul className="space-y-1">
                   {formData.milestones.filter(m => m.description).map((m, i) => (
                     <li key={i} className="text-sm text-neutral-300">
-                      {i + 1}. {m.description}
+                      {i + 1}. {m.description} - {m.date ? new Date(m.date).toLocaleDateString() : 'No date'}
                     </li>
                   ))}
                 </ul>
@@ -550,9 +495,15 @@ export function ProjectForm() {
             </div>
 
             <div className="p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
-              <p className="text-sm text-orange-400">
-                By submitting this project, you confirm that all information provided is accurate and you have the authority to represent the organization.
-              </p>
+              <div className="flex items-start gap-3">
+                <Bot className="w-5 h-5 text-orange-500 mt-0.5" />
+                <div>
+                  <p className="text-sm text-orange-400 font-medium">Agent Review Process</p>
+                  <p className="text-sm text-neutral-300 mt-1">
+                    After submission, our AI Oracle will review your application. You'll have a conversation with the agent to discuss and refine your project details before final approval.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -570,23 +521,26 @@ export function ProjectForm() {
           {currentStep < steps.length - 1 ? (
             <Button
               onClick={handleNext}
-              className="bg-orange-500 hover:bg-orange-600"
+              className="bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25"
             >
               Next
             </Button>
           ) : (
             <Button
               onClick={handleSubmit}
-              disabled={isLoading}
-              className="bg-green-600 hover:bg-green-700"
+              disabled={isSubmitting}
+              className="bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/25"
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Submitting...
                 </>
               ) : (
-                'Submit Project'
+                <>
+                  <Bot className="w-4 h-4 mr-2" />
+                  Submit for Review
+                </>
               )}
             </Button>
           )}
